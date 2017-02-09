@@ -1,1 +1,111 @@
-<h1>OPA</h1>
+<html lang="en" >
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+
+    <style>
+        .fa{font-size: 20pt !important;}
+    </style>
+</head>
+<body ng-app="mchanApp" ng-controller="mchanCtrl" ng-cloak layout="column">
+
+    <md-toolbar layout="row">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Sidebar" ng-click="toggleSidenav()">
+                <md-icon md-font-icon="fa-bars" class="fa" alt="bars"></md-icon>
+            </md-button>
+
+            <h2 flex md-truncate>Toolbar with Disabled/Enabled Icon Buttons</h2>
+
+            <md-button class="md-icon-button" aria-label="Favorite">
+                <md-icon md-font-icon="fa-heart" class="fa" alt="heart"></md-icon>
+            </md-button>
+
+            <md-button class="md-icon-button" aria-label="More">
+                <md-icon md-font-icon="fa-ellipsis-v" class="fa" alt="ellipsis"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content flex>
+        <md-sidenav md-component-id="sidenavId" class="md-sidenav-left md-whiteframe-z2" layout="column">
+            <md-list>
+                <md-list-item>
+
+                    <md-item-content md-ink-ripple>
+                        <div class="inset">Item 1</div>
+                    </md-item-content>
+
+                </md-list-item>
+            </md-list>
+        </md-sidenav>
+
+        <md-content>
+            <md-input-container>
+                <label>Title</label>
+                <input ng-model="newChanUrl">
+            </md-input-container>
+
+            <md-button class="md-fab" aria-label="Choose chan" ng-click="addChan()">
+                <md-icon md-font-icon="fa-plus" class="fa"></md-icon>
+            </md-button>
+
+        </md-content>
+    </md-content>
+
+<!-- Angular Material requires Angular.js Libraries -->
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+<!-- Angular Material Library -->
+<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+<!-- Font Awensome-->
+<script src="https://use.fontawesome.com/357547ef82.js"></script>
+
+<!-- Your application bootstrap  -->
+<script type="text/javascript">
+
+    app = angular.module('mchanApp', ['ngMaterial']);
+    app.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.useXDomain = true;
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    }
+    ]);
+
+    app.controller('mchanCtrl', function ($scope, $mdSidenav, $sce, $http) {
+
+        $scope.toggleSidenav = function() { $mdSidenav('sidenavId').toggle();};
+
+        $scope.addChan = function(){
+            $sce.trustAsResourceUrl($scope.newChanUrl);
+
+            $http.get($scope.newChanUrl)
+                .then(function(response){
+                    console.log("test");
+                    console.log(response);
+                })
+                .catch(function(response){
+                    console.log("test2");
+                    console.log(response);
+                });
+        };
+
+
+    });
+
+    angular.module('mchanApp').config(function($mdThemingProvider) {
+        $mdThemingProvider.theme('default')
+            .primaryPalette('grey')
+            .accentPalette('green');
+    });
+
+
+
+</script>
+
+</body>
+</html>
