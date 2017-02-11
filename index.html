@@ -2,11 +2,63 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Angular Material style sheet -->
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
 
     <style>
         .fa{font-size: 20pt !important;}
     </style>
+
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+    <!-- Font Awensome-->
+    <script src="https://use.fontawesome.com/357547ef82.js"></script>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Your application bootstrap  -->
+    <script type="text/javascript">
+
+        app = angular.module('mchanApp', ['ngMaterial']);
+        app.config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.useXDomain = true;
+            delete $httpProvider.defaults.headers.common['X-Requested-With'];
+        }
+        ]);
+
+        app.controller('mchanCtrl', function ($scope, $mdSidenav, $sce, $http) {
+
+            $scope.toggleSidenav = function() { $mdSidenav('sidenavId').toggle();};
+
+            $scope.addChan = function(){
+
+                $.getJSON($scope.newChanUrl, function(data){
+                    console.log(data);
+                });
+            };
+
+            $scope.iframeLoadedCallBack = function(){
+                //console.log($($("#loader")[0])("html"));
+            };
+
+        });
+
+        angular.module('mchanApp').config(function($mdThemingProvider) {
+            $mdThemingProvider.theme('default')
+                .primaryPalette('grey')
+                .accentPalette('green');
+        });
+
+
+    </script>
+
 </head>
 <body ng-app="mchanApp" ng-controller="mchanCtrl" ng-cloak layout="column">
 
@@ -53,59 +105,6 @@
 
         </md-content>
     </md-content>
-
-<!-- Angular Material requires Angular.js Libraries -->
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-
-<!-- Angular Material Library -->
-<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
-
-<!-- Font Awensome-->
-<script src="https://use.fontawesome.com/357547ef82.js"></script>
-
-<!-- Your application bootstrap  -->
-<script type="text/javascript">
-
-    app = angular.module('mchanApp', ['ngMaterial']);
-    app.config(['$httpProvider', function($httpProvider) {
-        $httpProvider.defaults.useXDomain = true;
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    }
-    ]);
-
-    app.controller('mchanCtrl', function ($scope, $mdSidenav, $sce, $http) {
-
-        $scope.toggleSidenav = function() { $mdSidenav('sidenavId').toggle();};
-
-        $scope.addChan = function(){
-            $sce.trustAsResourceUrl($scope.newChanUrl);
-
-            $http.get($scope.newChanUrl)
-                .then(function(response){
-                    console.log("test");
-                    console.log(response);
-                })
-                .catch(function(response){
-                    console.log("test2");
-                    console.log(response);
-                });
-        };
-
-
-    });
-
-    angular.module('mchanApp').config(function($mdThemingProvider) {
-        $mdThemingProvider.theme('default')
-            .primaryPalette('grey')
-            .accentPalette('green');
-    });
-
-
-
-</script>
 
 </body>
 </html>
